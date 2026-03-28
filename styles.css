@@ -949,7 +949,7 @@ section {
 .gallery-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(2, 250px);
+    grid-auto-rows: 260px;
     gap: 16px;
 }
 
@@ -972,7 +972,7 @@ section {
 }
 
 .gallery-item-lg {
-    grid-row: span 2;
+    /* same as regular items */
 }
 
 .gallery-overlay {
@@ -1925,10 +1925,6 @@ section {
     .gallery-grid {
         grid-template-columns: repeat(2, 1fr);
         grid-template-rows: auto;
-    }
-
-    .gallery-item-lg {
-        grid-row: span 1;
     }
 
     .gallery-item {
