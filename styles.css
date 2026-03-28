@@ -997,6 +997,45 @@ section {
     font-weight: 600;
 }
 
+.gallery-hidden {
+    display: none;
+}
+
+.gallery-grid.show-all .gallery-hidden {
+    display: block;
+}
+
+.btn-show-more {
+    background: transparent;
+    color: var(--gold-light);
+    border: 1.5px solid rgba(184, 147, 90, 0.4);
+    padding: 12px 32px;
+    border-radius: 50px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.btn-show-more:hover {
+    background: rgba(184, 147, 90, 0.15);
+    border-color: var(--gold);
+    color: var(--gold);
+    transform: translateY(-2px);
+}
+
+.btn-show-more i {
+    transition: transform 0.3s ease;
+}
+
+.btn-show-more.expanded i {
+    transform: rotate(180deg);
+}
+
 /* ============================================
    EXPERIENCE
    ============================================ */

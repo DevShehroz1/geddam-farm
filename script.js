@@ -382,4 +382,25 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 
+    // ============================================
+    // GALLERY SHOW MORE
+    // ============================================
+    var showMoreBtn = document.getElementById('showMoreGallery');
+    var galleryGrid = document.getElementById('galleryGrid');
+
+    if (showMoreBtn && galleryGrid) {
+        showMoreBtn.addEventListener('click', function () {
+            var isExpanded = galleryGrid.classList.contains('show-all');
+            galleryGrid.classList.toggle('show-all');
+            showMoreBtn.classList.toggle('expanded');
+
+            if (isExpanded) {
+                showMoreBtn.querySelector('span').textContent = 'Show More Photos';
+                galleryGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            } else {
+                showMoreBtn.querySelector('span').textContent = 'Show Less';
+            }
+        });
+    }
+
 });
