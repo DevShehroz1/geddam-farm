@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Casa Serena — Direct Booking</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --cream:#F7F3EC;
+  --cream2:#EDE7DA;
+  --forest:#1C2B1E;
+  --forest2:#2D4230;
+  --gold:#B8935A;
+  --gold2:#D4AA72;
+  --text:#1A1A18;
+  --muted:#6B6558;
+  --border:#D9D2C5;
+  --white:#FFFFFF;
+  --red:#C0392B;
+  --green:#2D6A4F;
+}
+html{scroll-behavior:smooth;font-size:16px}
+body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;transition:all .4s ease}
+nav.scrolled{background:var(--forest);box-shadow:0 2px 20px rgba(0,0,0,.3)}
+.nav-inner{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 2rem}
+.nav-logo{font-family:'Cormorant Garamond',serif;font-size:1.5rem;font-weight:400;color:var(--white);letter-spacing:.08em;text-decoration:none}
+.nav-logo span{color:var(--gold2)}
+.nav-links{display:flex;gap:2rem;list-style:none}
+.nav-links a{color:rgba(255,255,255,.75);text-decoration:none;font-size:.85rem;font-weight:400;letter-spacing:.06em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:var(--gold2)}
+.nav-cta{background:var(--gold);color:var(--white);padding:.6rem 1.4rem;border-radius:2px;font-size:.8rem;font-weight:500;text-decoration:none;letter-spacing:.06em;text-transform:uppercase;transition:background .2s}
+.nav-cta:hover{background:var(--gold2)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none}
+.hamburger span{width:22px;height:1.5px;background:var(--white);display:block;transition:.3s}
+
+/* HERO */
+.hero{height:100vh;position:relative;overflow:hidden}
+.hero-bg{width:100%;height:100%;object-fit:cover;object-position:center}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(to bottom,rgba(10,18,10,.4) 0%,rgba(10,18,10,.15) 40%,rgba(10,18,10,.6) 100%)}
+.hero-content{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:0 2rem 5rem;max-width:1280px;margin:0 auto;left:0;right:0}
+.hero-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(184,147,90,.15);border:1px solid var(--gold2);color:var(--gold2);font-size:.75rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;padding:.4rem 1rem;border-radius:2px;margin-bottom:1.25rem;backdrop-filter:blur(4px)}
+.hero h1{font-family:'Cormorant Garamond',serif;font-size:clamp(3rem,7vw,6rem);font-weight:300;color:var(--white);line-height:1.05;margin-bottom:.75rem;max-width:700px}
+.hero h1 em{font-style:italic;color:var(--gold2)}
+.hero-sub{color:rgba(255,255,255,.8);font-size:1rem;font-weight:300;letter-spacing:.02em;margin-bottom:2rem;max-width:480px;line-height:1.6}
+.hero-actions{display:flex;gap:1rem;flex-wrap:wrap}
+.btn-primary{background:var(--gold);color:var(--white);padding:.85rem 2rem;font-size:.85rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;border-radius:2px;border:none;cursor:pointer;transition:all .2s}
+.btn-primary:hover{background:var(--gold2);transform:translateY(-1px)}
+.btn-outline{background:transparent;color:var(--white);padding:.85rem 2rem;font-size:.85rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;text-decoration:none;border-radius:2px;border:1px solid rgba(255,255,255,.5);cursor:pointer;transition:all .2s}
+.btn-outline:hover{border-color:var(--white);background:rgba(255,255,255,.1)}
+.hero-scroll{position:absolute;bottom:2rem;right:2rem;display:flex;flex-direction:column;align-items:center;gap:.5rem;color:rgba(255,255,255,.6);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase}
+.scroll-line{width:1px;height:40px;background:rgba(255,255,255,.4);animation:scrollAnim 2s ease-in-out infinite}
+@keyframes scrollAnim{0%,100%{transform:scaleY(1);opacity:.4}50%{transform:scaleY(1.3);opacity:.8}}
+
+/* STATS BAR */
+.stats-bar{background:var(--forest);color:var(--white)}
+.stats-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);padding:0}
+.stat-item{padding:1.5rem 2rem;display:flex;flex-direction:column;gap:.3rem;border-right:1px solid rgba(255,255,255,.1);transition:background .2s}
+.stat-item:last-child{border-right:none}
+.stat-item:hover{background:var(--forest2)}
+.stat-label{font-size:.7rem;font-weight:400;letter-spacing:.12em;text-transform:uppercase;color:var(--gold2);opacity:.9}
+.stat-value{font-family:'Cormorant Garamond',serif;font-size:1.75rem;font-weight:300;line-height:1}
+.stat-detail{font-size:.75rem;color:rgba(255,255,255,.55);font-weight:300}
+
+/* SECTION UTILITY */
+section{padding:5rem 2rem}
+.container{max-width:1280px;margin:0 auto}
+.section-label{font-size:.72rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:.75rem;display:flex;align-items:center;gap:.75rem}
+.section-label::after{content:'';flex:1;height:1px;background:var(--border);max-width:60px}
+.section-title{font-family:'Cormorant Garamond',serif;font-size:clamp(2rem,4vw,3rem);font-weight:300;line-height:1.15;margin-bottom:1.25rem;color:var(--forest)}
+.section-title em{font-style:italic}
+
+/* OVERVIEW */
+.overview{background:var(--white)}
+.overview-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:start}
+.overview-text p{color:var(--muted);line-height:1.85;margin-bottom:1.25rem;font-weight:300;font-size:.95rem}
+.highlights{margin-top:2rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.highlight-item{display:flex;align-items:flex-start;gap:.75rem}
+.hi-icon{width:36px;height:36px;background:rgba(184,147,90,.12);border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;color:var(--gold);font-size:1rem}
+.hi-text strong{display:block;font-size:.82rem;font-weight:500;color:var(--text);margin-bottom:.2rem}
+.hi-text span{font-size:.78rem;color:var(--muted)}
+.overview-image-stack{position:relative}
+.img-main{width:100%;height:420px;object-fit:cover;border-radius:2px;display:block}
+.img-secondary{width:55%;position:absolute;bottom:-2rem;right:-1.5rem;border:4px solid var(--white);border-radius:2px;height:200px;object-fit:cover;box-shadow:0 8px 32px rgba(0,0,0,.15)}
+.rating-badge{position:absolute;top:1.5rem;left:-1.5rem;background:var(--forest);color:var(--white);padding:1rem 1.25rem;border-radius:2px;text-align:center}
+.rating-score{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;line-height:1;color:var(--gold2)}
+.rating-label{font-size:.65rem;text-transform:uppercase;letter-spacing:.1em;color:rgba(255,255,255,.6);margin-top:.25rem}
+.rating-count{font-size:.7rem;color:rgba(255,255,255,.5);margin-top:.1rem}
+
+/* GALLERY */
+.gallery{background:var(--cream)}
+.gallery-header{display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:2rem}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,240px);gap:8px}
+.gallery-item{overflow:hidden;cursor:pointer;position:relative;border-radius:2px}
+.gallery-item:first-child{grid-column:span 2;grid-row:span 2}
+.gallery-item img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.gallery-item:hover img{transform:scale(1.04)}
+.gallery-item::after{content:'';position:absolute;inset:0;background:rgba(0,0,0,0);transition:background .3s}
+.gallery-item:hover::after{background:rgba(0,0,0,.15)}
+.view-all-btn{display:flex;align-items:center;gap:.5rem;color:var(--forest);font-size:.82rem;font-weight:500;letter-spacing:.06em;text-transform:uppercase;text-decoration:none;border-bottom:1px solid var(--forest);padding-bottom:2px;transition:all .2s;background:none;border-top:none;border-left:none;border-right:none;cursor:pointer}
+.view-all-btn:hover{color:var(--gold);border-color:var(--gold)}
+
+/* LIGHTBOX */
+.lightbox{position:fixed;inset:0;z-index:999;background:rgba(0,0,0,.92);display:none;align-items:center;justify-content:center}
+.lightbox.open{display:flex}
+.lb-img{max-width:90vw;max-height:85vh;object-fit:contain;border-radius:2px}
+.lb-close{position:absolute;top:1.5rem;right:1.5rem;background:none;border:none;color:var(--white);font-size:2rem;cursor:pointer;opacity:.7;transition:opacity .2s}
+.lb-close:hover{opacity:1}
+.lb-nav{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--white);width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:1.25rem;transition:all .2s;backdrop-filter:blur(4px)}
+.lb-nav:hover{background:rgba(255,255,255,.2)}
+.lb-prev{left:1.5rem}
+.lb-next{right:1.5rem}
+
+/* AMENITIES */
+.amenities{background:var(--white)}
+.amenity-tabs{display:flex;gap:0;margin-bottom:2.5rem;border-bottom:1px solid var(--border)}
+.amenity-tab{background:none;border:none;padding:.75rem 1.5rem;font-size:.82rem;font-weight:400;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s}
+.amenity-tab.active{color:var(--forest);border-bottom-color:var(--gold);font-weight:500}
+.amenity-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1px;background:var(--border)}
+.amenity-item{display:flex;align-items:center;gap:.75rem;padding:1.1rem 1.25rem;background:var(--white);font-size:.87rem;color:var(--text);font-weight:300}
+.amenity-icon{font-size:1.1rem;flex-shrink:0;width:24px;text-align:center}
+
+/* BOOKING */
+.booking{background:var(--cream)}
+.booking-layout{display:grid;grid-template-columns:1fr 380px;gap:4rem;align-items:start}
+.booking-widget{background:var(--white);border-radius:2px;padding:2rem;border:1px solid var(--border);position:sticky;top:6rem}
+.booking-widget-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:1.5rem}
+.price-display{font-family:'Cormorant Garamond',serif}
+.price-main{font-size:2.25rem;font-weight:300;color:var(--forest)}
+.price-main span{font-size:1rem;font-weight:400;color:var(--muted)}
+.price-sub{font-size:.78rem;color:var(--muted);margin-top:.1rem}
+.stars{color:var(--gold);font-size:.9rem;letter-spacing:.05em}
+.date-row{display:grid;grid-template-columns:1fr 1fr;gap:1px;border:1px solid var(--border);border-radius:2px;overflow:hidden;margin-bottom:1px}
+.date-field{display:flex;flex-direction:column;padding:.85rem 1rem;cursor:pointer;transition:background .15s}
+.date-field:hover,.date-field:focus-within{background:var(--cream)}
+.date-field label{font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:.25rem}
+.date-field input{border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);cursor:pointer;outline:none;width:100%}
+.guests-field{border:1px solid var(--border);border-radius:2px;padding:.85rem 1rem;display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem;cursor:pointer}
+.guests-field label{font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);display:block}
+.guests-field select{border:none;background:transparent;font-family:'DM Sans',sans-serif;font-size:.9rem;color:var(--text);cursor:pointer;outline:none}
+.btn-book{width:100%;background:var(--forest);color:var(--white);padding:1rem;font-size:.85rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;margin-bottom:1rem;transition:background .2s}
+.btn-book:hover{background:var(--forest2)}
+.btn-inquire{width:100%;background:transparent;color:var(--forest);padding:.85rem;font-size:.82rem;font-weight:400;letter-spacing:.06em;text-transform:uppercase;border:1px solid var(--forest);border-radius:2px;cursor:pointer;transition:all .2s}
+.btn-inquire:hover{background:var(--forest);color:var(--white)}
+.price-breakdown{margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid var(--border)}
+.price-line{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem;font-size:.87rem;color:var(--muted)}
+.price-line.total{font-size:.95rem;font-weight:500;color:var(--text);padding-top:.75rem;border-top:1px solid var(--border);margin-top:.25rem}
+.price-line span:last-child{color:var(--text)}
+.save-badge{background:rgba(45,106,79,.1);color:var(--green);font-size:.72rem;font-weight:500;padding:.3rem .75rem;border-radius:2px;text-align:center;margin-bottom:1.25rem}
+.no-fee-note{text-align:center;font-size:.72rem;color:var(--muted);margin-top:.75rem}
+
+/* BOOKING FORM LEFT */
+.booking-info h3{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:300;color:var(--forest);margin-bottom:1rem}
+.booking-info p{color:var(--muted);font-size:.9rem;line-height:1.7;font-weight:300;margin-bottom:2rem}
+.process-steps{display:flex;flex-direction:column;gap:0}
+.process-step{display:flex;gap:1.25rem;padding:1.25rem 0;border-bottom:1px solid var(--border)}
+.process-step:last-child{border-bottom:none}
+.step-num{width:32px;height:32px;border-radius:50%;border:1px solid var(--gold);color:var(--gold);display:flex;align-items:center;justify-content:center;font-family:'Cormorant Garamond',serif;font-size:1rem;flex-shrink:0;font-weight:400}
+.step-text strong{display:block;font-size:.88rem;font-weight:500;color:var(--text);margin-bottom:.25rem}
+.step-text span{font-size:.82rem;color:var(--muted);line-height:1.6}
+
+/* CALENDAR */
+.availability{background:var(--forest)}
+.availability .section-label{color:var(--gold2)}
+.availability .section-label::after{background:rgba(255,255,255,.15)}
+.availability .section-title{color:var(--white)}
+.calendar-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:2.5rem}
+.cal-month{background:rgba(255,255,255,.05);border:1px solid rgba(255,255,255,.1);border-radius:2px;padding:1.5rem}
+.cal-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.25rem}
+.cal-header h4{font-family:'Cormorant Garamond',serif;font-size:1.2rem;font-weight:300;color:var(--white);letter-spacing:.05em}
+.cal-nav{background:none;border:none;color:rgba(255,255,255,.5);cursor:pointer;font-size:1.1rem;padding:.25rem;transition:color .2s}
+.cal-nav:hover{color:var(--gold2)}
+.cal-days{display:grid;grid-template-columns:repeat(7,1fr);gap:2px;margin-bottom:.5rem}
+.cal-day-label{text-align:center;font-size:.65rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.4);padding:.4rem 0}
+.cal-day{text-align:center;padding:.5rem .25rem;font-size:.8rem;font-weight:300;color:rgba(255,255,255,.7);border-radius:2px;cursor:default;transition:all .15s}
+.cal-day.available{color:rgba(255,255,255,.9);cursor:pointer}
+.cal-day.available:hover{background:rgba(184,147,90,.3);color:var(--gold2)}
+.cal-day.booked{color:rgba(255,255,255,.25);text-decoration:line-through}
+.cal-day.today{background:rgba(184,147,90,.2);color:var(--gold2);font-weight:500}
+.cal-day.empty{color:transparent;cursor:default}
+.cal-legend{display:flex;align-items:center;gap:2rem;margin-top:1.5rem}
+.legend-item{display:flex;align-items:center;gap:.5rem;font-size:.75rem;color:rgba(255,255,255,.5)}
+.legend-dot{width:10px;height:10px;border-radius:50%}
+.legend-dot.available{background:rgba(255,255,255,.5)}
+.legend-dot.booked{background:rgba(192,57,43,.6)}
+.cal-note{background:rgba(184,147,90,.1);border:1px solid rgba(184,147,90,.25);border-radius:2px;padding:1rem 1.25rem;margin-top:1.5rem;display:flex;align-items:center;gap:.75rem;font-size:.8rem;color:rgba(255,255,255,.7)}
+
+/* REVIEWS */
+.reviews{background:var(--white)}
+.reviews-summary{display:flex;gap:3rem;align-items:center;margin-bottom:3rem;padding-bottom:2.5rem;border-bottom:1px solid var(--border)}
+.review-score-big{text-align:center}
+.rsb-num{font-family:'Cormorant Garamond',serif;font-size:5rem;font-weight:300;color:var(--forest);line-height:1}
+.rsb-label{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted)}
+.rating-bars{flex:1}
+.rating-bar-row{display:flex;align-items:center;gap:.75rem;margin-bottom:.5rem;font-size:.8rem}
+.rb-label{color:var(--muted);width:60px;font-weight:300}
+.rb-track{flex:1;height:4px;background:var(--cream2);border-radius:2px;overflow:hidden}
+.rb-fill{height:100%;border-radius:2px;background:var(--gold);transition:width .6s ease}
+.rb-count{color:var(--muted);width:24px;text-align:right;font-weight:300}
+.reviews-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem}
+.review-card{padding:1.75rem;background:var(--cream);border-radius:2px}
+.rc-header{display:flex;gap:1rem;align-items:center;margin-bottom:1rem}
+.rc-avatar{width:44px;height:44px;border-radius:50%;object-fit:cover;flex-shrink:0;font-size:1.1rem;background:var(--forest2);display:flex;align-items:center;justify-content:center;color:var(--white);font-family:'Cormorant Garamond',serif}
+.rc-name{font-weight:500;font-size:.9rem;color:var(--text)}
+.rc-meta{font-size:.75rem;color:var(--muted);margin-top:.15rem}
+.rc-text{font-size:.87rem;color:var(--muted);line-height:1.7;font-weight:300}
+.rc-platform{display:inline-flex;align-items:center;gap:.4rem;font-size:.7rem;color:var(--muted);margin-top:.75rem;padding-top:.75rem;border-top:1px solid var(--border)}
+
+/* LOCATION */
+.location-section{background:var(--cream)}
+.location-grid{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+.map-placeholder{height:380px;background:var(--forest2);border-radius:2px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.map-placeholder::before{content:'';position:absolute;inset:0;background:url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect fill="%232D4230" width="100" height="100"/><path stroke="%231C2B1E" stroke-width=".5" fill="none" d="M0 20h100M0 40h100M0 60h100M0 80h100M20 0v100M40 0v100M60 0v100M80 0v100"/></svg>')}
+.map-pin{position:relative;z-index:1;text-align:center;color:var(--gold2)}
+.map-pin-icon{font-size:2.5rem;display:block;margin-bottom:.5rem}
+.map-pin-label{font-size:.8rem;font-weight:300;letter-spacing:.05em}
+.nearby-list{list-style:none;display:flex;flex-direction:column;gap:0}
+.nearby-item{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid var(--border);font-size:.87rem}
+.nearby-item:last-child{border-bottom:none}
+.ni-place{display:flex;align-items:center;gap:.6rem;color:var(--text);font-weight:300}
+.ni-dist{color:var(--muted);font-size:.8rem}
+
+/* POLICIES */
+.policies{background:var(--white)}
+.policies-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2rem}
+.policy-card{border:1px solid var(--border);border-radius:2px;padding:1.75rem}
+.policy-card h4{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:300;color:var(--forest);margin-bottom:1rem}
+.policy-list{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.policy-list li{display:flex;gap:.6rem;font-size:.83rem;color:var(--muted);font-weight:300;line-height:1.5}
+.policy-list li::before{content:'—';color:var(--gold);flex-shrink:0;margin-top:.05em}
+
+/* INQUIRE FORM */
+.inquire-section{background:var(--forest)}
+.inquire-inner{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center}
+.inquire-text .section-label{color:var(--gold2)}
+.inquire-text .section-label::after{background:rgba(255,255,255,.15)}
+.inquire-text .section-title{color:var(--white)}
+.inquire-text p{color:rgba(255,255,255,.65);font-size:.92rem;line-height:1.7;font-weight:300;margin-top:.75rem}
+.contact-icons{margin-top:2rem;display:flex;gap:1.5rem}
+.ci{display:flex;align-items:center;gap:.6rem;font-size:.82rem;color:rgba(255,255,255,.6)}
+.inquiry-form{display:flex;flex-direction:column;gap:1rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-field{display:flex;flex-direction:column;gap:.4rem}
+.form-field label{font-size:.68rem;font-weight:500;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.45)}
+.form-field input,.form-field textarea,.form-field select{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.15);border-radius:2px;padding:.75rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;color:var(--white);outline:none;transition:border-color .2s}
+.form-field input::placeholder,.form-field textarea::placeholder{color:rgba(255,255,255,.25)}
+.form-field input:focus,.form-field textarea:focus,.form-field select:focus{border-color:var(--gold2)}
+.form-field textarea{min-height:100px;resize:vertical}
+.btn-submit{background:var(--gold);color:var(--white);padding:1rem;font-size:.85rem;font-weight:500;letter-spacing:.08em;text-transform:uppercase;border:none;border-radius:2px;cursor:pointer;transition:background .2s}
+.btn-submit:hover{background:var(--gold2)}
+.form-note{font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.25rem}
+
+/* FOOTER */
+footer{background:#111812;color:rgba(255,255,255,.6);padding:3rem 2rem}
+.footer-inner{max-width:1280px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:3rem}
+.footer-brand .nav-logo{display:inline-block;margin-bottom:1rem}
+.footer-brand p{font-size:.82rem;font-weight:300;line-height:1.7;color:rgba(255,255,255,.45);max-width:260px}
+.footer-col h5{font-size:.7rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;color:var(--gold2);margin-bottom:1rem}
+.footer-col ul{list-style:none;display:flex;flex-direction:column;gap:.6rem}
+.footer-col ul li a{font-size:.82rem;font-weight:300;color:rgba(255,255,255,.45);text-decoration:none;transition:color .2s}
+.footer-col ul li a:hover{color:var(--gold2)}
+.footer-bottom{max-width:1280px;margin:2rem auto 0;padding-top:1.5rem;border-top:1px solid rgba(255,255,255,.08);display:flex;justify-content:space-between;align-items:center;font-size:.75rem;color:rgba(255,255,255,.3)}
+.footer-bottom-links{display:flex;gap:1.5rem}
+.footer-bottom-links a{color:rgba(255,255,255,.3);text-decoration:none;transition:color .2s}
+.footer-bottom-links a:hover{color:rgba(255,255,255,.6)}
+.secure-icons{display:flex;align-items:center;gap:.75rem;font-size:.75rem;color:rgba(255,255,255,.3)}
+
+/* MOBILE NAV */
+.mobile-menu{display:none;position:fixed;inset:0;z-index:99;background:var(--forest);padding:5rem 2rem 2rem;flex-direction:column;gap:2rem}
+.mobile-menu.open{display:flex}
+.mobile-menu a{font-family:'Cormorant Garamond',serif;font-size:2rem;font-weight:300;color:var(--white);text-decoration:none;border-bottom:1px solid rgba(255,255,255,.1);padding-bottom:1rem}
+
+/* SUCCESS MESSAGE */
+.success-msg{background:rgba(45,106,79,.1);border:1px solid var(--green);color:var(--green);padding:1rem;border-radius:2px;font-size:.85rem;text-align:center;display:none;margin-top:1rem}
+.success-msg.show{display:block}
+
+@media(max-width:1024px){
+  .overview-grid{grid-template-columns:1fr;gap:3rem}
+  .overview-image-stack{padding-bottom:2rem}
+  .img-secondary{display:none}
+  .rating-badge{display:none}
+  .booking-layout{grid-template-columns:1fr}
+  .booking-widget{position:static}
+  .calendar-wrap{grid-template-columns:1fr}
+  .inquire-inner{grid-template-columns:1fr;gap:2rem}
+  .footer-inner{grid-template-columns:1fr 1fr;gap:2rem}
+}
+@media(max-width:768px){
+  .stats-inner{grid-template-columns:repeat(2,1fr)}
+  .stat-item{border-right:none;border-bottom:1px solid rgba(255,255,255,.1)}
+  .gallery-grid{grid-template-columns:1fr 1fr;grid-template-rows:repeat(3,200px)}
+  .gallery-item:first-child{grid-column:span 2;grid-row:span 1}
+  .reviews-grid{grid-template-columns:1fr}
+  .location-grid{grid-template-columns:1fr}
+  .policies-grid{grid-template-columns:1fr}
+  .nav-links{display:none}
+  .hamburger{display:flex}
+  .footer-inner{grid-template-columns:1fr}
+  .hero-content{padding:0 1.25rem 4rem}
+  section{padding:3.5rem 1.25rem}
+  .form-row{grid-template-columns:1fr}
+  .reviews-summary{flex-direction:column;gap:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-inner">
+    <a href="#" class="nav-logo">Casa <span>Serena</span></a>
+    <ul class="nav-links">
+      <li><a href="#overview">About</a></li>
+      <li><a href="#gallery">Photos</a></li>
+      <li><a href="#amenities">Amenities</a></li>
+      <li><a href="#availability">Availability</a></li>
+      <li><a href="#reviews">Reviews</a></li>
+      <li><a href="#location">Location</a></li>
+    </ul>
+    <a href="#booking" class="nav-cta">Book Direct</a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#overview" onclick="closeMobile()">About</a>
+  <a href="#gallery" onclick="closeMobile()">Photos</a>
+  <a href="#amenities" onclick="closeMobile()">Amenities</a>
+  <a href="#availability" onclick="closeMobile()">Availability</a>
+  <a href="#reviews" onclick="closeMobile()">Reviews</a>
+  <a href="#location" onclick="closeMobile()">Location</a>
+  <a href="#booking" onclick="closeMobile()">Book Direct</a>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <img class="hero-bg" src="https://images.unsplash.com/photo-1564013799919-ab600027ffc6?w=1800&q=90" alt="Casa Serena luxury vacation home">
+  <div class="hero-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Book Direct &amp; Save Up to 15%</div>
+    <h1>A Private <em>Sanctuary</em><br>in the Heart of Sedona</h1>
+    <p class="hero-sub">4 bedrooms · 3.5 baths · Sleeps 10 · Private pool · Red rock views. No platform fees — ever.</p>
+    <div class="hero-actions">
+      <a href="#booking" class="btn-primary">Check Availability</a>
+      <a href="#gallery" class="btn-outline">View Photos</a>
+    </div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-inner">
+    <div class="stat-item">
+      <span class="stat-label">Bedrooms</span>
+      <span class="stat-value">4</span>
+      <span class="stat-detail">King, King, Queen, Twin</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Guests</span>
+      <span class="stat-value">10</span>
+      <span class="stat-detail">Max capacity</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Living Area</span>
+      <span class="stat-value">3,200</span>
+      <span class="stat-detail">Square feet</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-label">Guest Rating</span>
+      <span class="stat-value">4.97</span>
+      <span class="stat-detail">148 reviews</span>
+    </div>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<section class="overview" id="overview">
+  <div class="container">
+    <div class="overview-grid">
+      <div class="overview-text">
+        <div class="section-label">About the Property</div>
+        <h2 class="section-title">Where Red Rock Views<br>Meet <em>Modern Luxury</em></h2>
+        <p>Perched above Sedona's iconic canyon landscape, Casa Serena offers an unmatched blend of refined interiors and breathtaking natural surroundings. Every room was designed to frame the views — floor-to-ceiling windows, wrap-around terraces, and an infinity-edge pool that seems to float over the mesa.</p>
+        <p>Whether you're here for a family retreat, a group milestone, or a creative escape, the property offers everything you need — without the noise of a hotel or the fees of a booking platform.</p>
+        <div class="highlights">
+          <div class="highlight-item">
+            <div class="hi-icon">&#x1F3CA;</div>
+            <div class="hi-text"><strong>Heated Infinity Pool</strong><span>Open year-round, canyon views</span></div>
+          </div>
+          <div class="highlight-item">
+            <div class="hi-icon">&#x1F511;</div>
+            <div class="hi-text"><strong>Self Check-In</strong><span>Flexible arrival anytime</span></div>
+          </div>
+          <div class="highlight-item">
+            <div class="hi-icon">&#x1F373;</div>
+            <div class="hi-text"><strong>Chef's Kitchen</strong><span>Fully equipped, Wolf range</span></div>
+          </div>
+          <div class="highlight-item">
+            <div class="hi-icon">&#x1F4F6;</div>
+            <div class="hi-text"><strong>Gigabit WiFi</strong><span>Starlink — work from anywhere</span></div>
+          </div>
+          <div class="highlight-item">
+            <div class="hi-icon">&#x1F697;</div>
+            <div class="hi-text"><strong>Private Parking</strong><span>4-car garage + driveway</span></div>
+          </div>
+          <div class="highlight-item">
+            <div class="hi-icon">&#x1F3D4;&#xFE0F;</div>
+            <div class="hi-text"><strong>Trail Access</strong><span>Direct to Cathedral Rock</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="overview-image-stack">
+        <div class="rating-badge">
+          <div class="rating-score">4.97</div>
+          <div class="rating-label">Guest Rating</div>
+          <div class="rating-count">148 reviews</div>
+        </div>
+        <img class="img-main" src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=800&q=85" alt="Casa Serena exterior with pool">
+        <img class="img-secondary" src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=600&q=85" alt="Interior living room">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="container">
+    <div class="gallery-header">
+      <div>
+        <div class="section-label">Property Photos</div>
+        <h2 class="section-title">Every Corner,<br><em>Thoughtfully Designed</em></h2>
+      </div>
+      <button class="view-all-btn" onclick="openLightbox(0)">View All Photos &rarr;</button>
+    </div>
+    <div class="gallery-grid">
+      <div class="gallery-item" onclick="openLightbox(0)">
+        <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=900&q=85" alt="Casa Serena pool and terrace">
+      </div>
+      <div class="gallery-item" onclick="openLightbox(1)">
+        <img src="https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=700&q=85" alt="Living room">
+      </div>
+      <div class="gallery-item" onclick="openLightbox(2)">
+        <img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=700&q=85" alt="Primary bedroom">
+      </div>
+      <div class="gallery-item" onclick="openLightbox(3)">
+        <img src="https://images.unsplash.com/photo-1556911220-bff31c812dba?w=700&q=85" alt="Chef's kitchen">
+      </div>
+      <div class="gallery-item" onclick="openLightbox(4)">
+        <img src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=700&q=85" alt="Spa bathroom">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIGHTBOX -->
+<div class="lightbox" id="lightbox">
+  <button class="lb-close" onclick="closeLightbox()">&times;</button>
+  <button class="lb-nav lb-prev" onclick="lbNav(-1)">&lsaquo;</button>
+  <img class="lb-img" id="lbImg" src="" alt="">
+  <button class="lb-nav lb-next" onclick="lbNav(1)">&rsaquo;</button>
+</div>
+
+<!-- AMENITIES -->
+<section class="amenities" id="amenities">
+  <div class="container">
+    <div class="section-label">What's Included</div>
+    <h2 class="section-title">Amenities &amp; <em>Features</em></h2>
+    <div class="amenity-tabs">
+      <button class="amenity-tab active" onclick="switchTab(this,'indoor')">Indoor</button>
+      <button class="amenity-tab" onclick="switchTab(this,'outdoor')">Outdoor</button>
+      <button class="amenity-tab" onclick="switchTab(this,'sleeping')">Sleeping</button>
+      <button class="amenity-tab" onclick="switchTab(this,'tech')">Tech &amp; Work</button>
+    </div>
+    <div class="amenity-grid" id="amenityGrid">
+      <!-- filled by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- BOOKING -->
+<section class="booking" id="booking">
+  <div class="container">
+    <div class="section-label">Reserve Your Stay</div>
+    <h2 class="section-title">Book <em>Direct</em>, Pay Less</h2>
+    <div class="booking-layout">
+      <div class="booking-info">
+        <div class="save-badge" style="display:inline-block;margin-bottom:2rem">Skip Airbnb's 14-18% service fee — book direct and keep more in your pocket</div>
+        <h3>Simple, transparent booking with zero platform markups</h3>
+        <p>When you book through Casa Serena directly, you pay our real rates with no surprise fees at checkout. We use Stripe's secure checkout — same bank-grade encryption you'd find on any major platform, without the middleman.</p>
+        <div class="process-steps">
+          <div class="process-step">
+            <div class="step-num">1</div>
+            <div class="step-text"><strong>Select your dates</strong><span>Check the live calendar, pick your arrival and departure. Pricing updates in real time based on season.</span></div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">2</div>
+            <div class="step-text"><strong>Instant or request booking</strong><span>Select dates under 4 nights book instantly. Longer stays go through a quick approval (we respond within 2 hours).</span></div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">3</div>
+            <div class="step-text"><strong>Secure payment via Stripe</strong><span>Pay by card, Apple Pay, or Google Pay. Remainder due 30 days before arrival.</span></div>
+          </div>
+          <div class="process-step">
+            <div class="step-num">4</div>
+            <div class="step-text"><strong>Confirmation + digital guidebook</strong><span>Instant email with check-in codes, house manual, area guide, and host contact info.</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BOOKING WIDGET -->
+      <div class="booking-widget">
+        <div class="booking-widget-header">
+          <div class="price-display">
+            <div class="price-main">$385 <span>/ night</span></div>
+            <div class="price-sub">Starting rate · varies by season</div>
+          </div>
+          <div>
+            <div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+            <div style="font-size:.72rem;color:var(--muted);text-align:right">148 reviews</div>
+          </div>
+        </div>
+        <div class="save-badge">You save ~$97/night vs. Airbnb pricing</div>
+        <div class="date-row">
+          <div class="date-field">
+            <label>Check In</label>
+            <input type="date" id="checkin" onchange="calcPrice()">
+          </div>
+          <div class="date-field" style="border-left:1px solid var(--border)">
+            <label>Check Out</label>
+            <input type="date" id="checkout" onchange="calcPrice()">
+          </div>
+        </div>
+        <div class="guests-field">
+          <div>
+            <label>Guests</label>
+            <select id="guestCount">
+              <option>1-2 guests</option>
+              <option selected>3-5 guests</option>
+              <option>6-8 guests</option>
+              <option>9-10 guests</option>
+            </select>
+          </div>
+          <span style="color:var(--muted);font-size:.8rem">Max 10</span>
+        </div>
+        <button class="btn-book" onclick="handleBook()">Reserve Now — Secure Checkout</button>
+        <button class="btn-inquire" onclick="document.getElementById('inquireSection').scrollIntoView({behavior:'smooth'})">Send an Inquiry First</button>
+        <div class="price-breakdown" id="breakdown">
+          <div class="price-line"><span id="nightsLabel">Select dates to see pricing</span><span id="nightsTotal">&mdash;</span></div>
+          <div class="price-line"><span>Cleaning fee</span><span>$250</span></div>
+          <div class="price-line"><span>Security deposit (refundable)</span><span>$500</span></div>
+          <div class="price-line"><span>Taxes (8.5%)</span><span id="taxTotal">&mdash;</span></div>
+          <div class="price-line total"><span>Total</span><span id="grandTotal">&mdash;</span></div>
+        </div>
+        <div class="no-fee-note">Secure payment via Stripe · No Airbnb/VRBO platform fees</div>
+        <div class="success-msg" id="bookSuccess">Booking request submitted! We'll confirm within 2 hours.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- AVAILABILITY CALENDAR -->
+<section class="availability" id="availability">
+  <div class="container">
+    <div class="section-label">Live Availability</div>
+    <h2 class="section-title">Calendar &amp; <em>Availability</em></h2>
+    <div class="calendar-wrap">
+      <div class="cal-month" id="cal1"></div>
+      <div class="cal-month" id="cal2"></div>
+    </div>
+    <div class="cal-legend">
+      <div class="legend-item"><div class="legend-dot available"></div> Available</div>
+      <div class="legend-item"><div class="legend-dot booked"></div> Booked</div>
+    </div>
+    <div class="cal-note">
+      Calendar syncs automatically with Airbnb &amp; VRBO — no double booking risk. Last synced: just now.
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="reviews" id="reviews">
+  <div class="container">
+    <div class="section-label">Guest Reviews</div>
+    <h2 class="section-title">What Our Guests <em>Say</em></h2>
+    <div class="reviews-summary">
+      <div class="review-score-big">
+        <div class="rsb-num">4.97</div>
+        <div class="stars" style="margin:.25rem 0">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="rsb-label">148 Reviews</div>
+      </div>
+      <div class="rating-bars">
+        <div class="rating-bar-row"><span class="rb-label">Clean</span><div class="rb-track"><div class="rb-fill" style="width:99%"></div></div><span class="rb-count">5.0</span></div>
+        <div class="rating-bar-row"><span class="rb-label">Accuracy</span><div class="rb-track"><div class="rb-fill" style="width:99%"></div></div><span class="rb-count">5.0</span></div>
+        <div class="rating-bar-row"><span class="rb-label">Location</span><div class="rb-track"><div class="rb-fill" style="width:95%"></div></div><span class="rb-count">4.9</span></div>
+        <div class="rating-bar-row"><span class="rb-label">Value</span><div class="rb-track"><div class="rb-fill" style="width:97%"></div></div><span class="rb-count">4.9</span></div>
+        <div class="rating-bar-row"><span class="rb-label">Host</span><div class="rb-track"><div class="rb-fill" style="width:99%"></div></div><span class="rb-count">5.0</span></div>
+      </div>
+    </div>
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="rc-header">
+          <div class="rc-avatar">MR</div>
+          <div><div class="rc-name">Marcus &amp; Rebecca T.</div><div class="rc-meta">Family reunion · 9 guests · March 2025</div></div>
+        </div>
+        <div class="stars" style="font-size:.8rem;margin-bottom:.75rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="rc-text">"Absolutely immaculate. The photos don't even do it justice — those red rock views from the pool deck at sunset made our trip unforgettable. Booking directly saved us nearly $400 vs what Airbnb was showing. Host responded to every message within minutes. 10/10, already planning a return trip."</div>
+        <div class="rc-platform">Imported from Airbnb · Verified stay</div>
+      </div>
+      <div class="review-card">
+        <div class="rc-header">
+          <div class="rc-avatar">JL</div>
+          <div><div class="rc-name">Jordan L.</div><div class="rc-meta">Bachelorette group · 8 guests · January 2025</div></div>
+        </div>
+        <div class="stars" style="font-size:.8rem;margin-bottom:.75rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="rc-text">"I've stayed at dozens of vacation rentals and this is in a different league. The chef's kitchen had everything we needed, the pool was heated and stunning, and the digital guidebook made everything so easy. The direct booking process was smooth — Stripe checkout was simple, confirmation was instant."</div>
+        <div class="rc-platform">Verified direct booking</div>
+      </div>
+      <div class="review-card">
+        <div class="rc-header">
+          <div class="rc-avatar">SC</div>
+          <div><div class="rc-name">Sarah C.</div><div class="rc-meta">Remote work retreat · 4 guests · November 2024</div></div>
+        </div>
+        <div class="stars" style="font-size:.8rem;margin-bottom:.75rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="rc-text">"Stayed for two weeks working remotely and it was genuinely the best I've ever worked. Starlink internet never dropped, the views kept me inspired, and the house itself is just insanely beautiful. The host was thoughtful and proactive. Felt like a five-star resort without the hovering."</div>
+        <div class="rc-platform">Imported from VRBO · Verified stay</div>
+      </div>
+      <div class="review-card">
+        <div class="rc-header">
+          <div class="rc-avatar">DM</div>
+          <div><div class="rc-name">David M.</div><div class="rc-meta">Anniversary trip · 2 guests · October 2024</div></div>
+        </div>
+        <div class="stars" style="font-size:.8rem;margin-bottom:.75rem">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+        <div class="rc-text">"A perfect anniversary celebration. The host even had a bottle of wine and flowers waiting for us, which we hadn't asked for. The master suite is next level — that shower with the view... wow. The direct booking was straightforward and we felt very protected by the rental agreement process."</div>
+        <div class="rc-platform">Verified direct booking</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LOCATION -->
+<section class="location-section" id="location">
+  <div class="container">
+    <div class="location-grid">
+      <div>
+        <div class="section-label">Getting Here</div>
+        <h2 class="section-title">Prime Sedona <em>Location</em></h2>
+        <ul class="nearby-list">
+          <li class="nearby-item"><span class="ni-place">Cathedral Rock Trailhead</span><span class="ni-dist">0.3 mi walk</span></li>
+          <li class="nearby-item"><span class="ni-place">Whole Foods Market</span><span class="ni-dist">2.1 mi</span></li>
+          <li class="nearby-item"><span class="ni-place">Tlaquepaque Arts District</span><span class="ni-dist">3.4 mi</span></li>
+          <li class="nearby-item"><span class="ni-place">Sedona Airport</span><span class="ni-dist">4.2 mi</span></li>
+          <li class="nearby-item"><span class="ni-place">Phoenix Sky Harbor</span><span class="ni-dist">1 hr 55 min</span></li>
+          <li class="nearby-item"><span class="ni-place">Uptown Sedona</span><span class="ni-dist">5.0 mi</span></li>
+        </ul>
+      </div>
+      <div class="map-placeholder">
+        <div class="map-pin">
+          <span class="map-pin-icon">&#x1F4CD;</span>
+          <span class="map-pin-label">Casa Serena — Sedona, AZ</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- POLICIES -->
+<section class="policies" id="policies">
+  <div class="container">
+    <div class="section-label">House Rules</div>
+    <h2 class="section-title">Policies &amp; <em>Guidelines</em></h2>
+    <div class="policies-grid">
+      <div class="policy-card">
+        <h4>Check-In &amp; Check-Out</h4>
+        <ul class="policy-list">
+          <li>Check-in: 4:00 PM or later (self check-in)</li>
+          <li>Check-out: 11:00 AM</li>
+          <li>Early check-in available upon request ($75 fee)</li>
+          <li>Late check-out by arrangement only</li>
+        </ul>
+      </div>
+      <div class="policy-card">
+        <h4>House Rules</h4>
+        <ul class="policy-list">
+          <li>No smoking inside or on the property</li>
+          <li>No parties or events over 10 guests</li>
+          <li>Pet-friendly (2 dogs max, $150 pet fee)</li>
+          <li>Quiet hours 10:00 PM - 8:00 AM</li>
+          <li>All guests must sign rental agreement</li>
+        </ul>
+      </div>
+      <div class="policy-card">
+        <h4>Cancellation Policy</h4>
+        <ul class="policy-list">
+          <li>Full refund if cancelled 60+ days out</li>
+          <li>50% refund 30-60 days before arrival</li>
+          <li>No refund within 30 days of arrival</li>
+          <li>Travel insurance strongly recommended</li>
+          <li>Force majeure handled case-by-case</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INQUIRE FORM -->
+<section class="inquire-section" id="inquireSection">
+  <div class="container">
+    <div class="inquire-inner">
+      <div class="inquire-text">
+        <div class="section-label">Get in Touch</div>
+        <h2 class="section-title">Questions? We'd Love to <em>Hear from You</em></h2>
+        <p>Not ready to book yet? Send us a message — we typically respond within a couple of hours and are happy to answer any questions about the property, the area, or upcoming availability.</p>
+        <div class="contact-icons">
+          <div class="ci">hello@casaserena.com</div>
+          <div class="ci">(928) 555-0192</div>
+        </div>
+      </div>
+      <form class="inquiry-form" onsubmit="handleInquiry(event)">
+        <div class="form-row">
+          <div class="form-field">
+            <label>First Name</label>
+            <input type="text" placeholder="Jane" required>
+          </div>
+          <div class="form-field">
+            <label>Last Name</label>
+            <input type="text" placeholder="Smith" required>
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" placeholder="jane@example.com" required>
+        </div>
+        <div class="form-row">
+          <div class="form-field">
+            <label>Arrival Date</label>
+            <input type="date">
+          </div>
+          <div class="form-field">
+            <label>Departure Date</label>
+            <input type="date">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Message</label>
+          <textarea placeholder="Tell us about your trip — number of guests, any questions, special occasions..."></textarea>
+        </div>
+        <button class="btn-submit" type="submit">Send Inquiry</button>
+        <div class="form-note">We'll respond within 2 hours during business hours (8am-8pm MST)</div>
+        <div class="success-msg" id="inquirySuccess" style="background:rgba(184,147,90,.1);border-color:var(--gold2);color:var(--gold2)">Inquiry sent! Expect a reply within 2 hours.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <a href="#" class="nav-logo">Casa <span>Serena</span></a>
+      <p>A privately owned luxury vacation rental in Sedona, Arizona. Book direct for the best rate and a personal hosting experience.</p>
+    </div>
+    <div class="footer-col">
+      <h5>Property</h5>
+      <ul>
+        <li><a href="#overview">About</a></li>
+        <li><a href="#gallery">Photos</a></li>
+        <li><a href="#amenities">Amenities</a></li>
+        <li><a href="#location">Location</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Booking</h5>
+      <ul>
+        <li><a href="#booking">Check Availability</a></li>
+        <li><a href="#availability">Calendar</a></li>
+        <li><a href="#policies">Policies</a></li>
+        <li><a href="#inquireSection">Contact</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h5>Also Find Us</h5>
+      <ul>
+        <li><a href="#">Airbnb Listing</a></li>
+        <li><a href="#">VRBO Listing</a></li>
+        <li><a href="#">Google Reviews</a></li>
+        <li><a href="#">Instagram</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>&copy; 2025 Casa Serena. All rights reserved. Sedona, AZ 86336.</span>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Rental Agreement</a>
+      <a href="#">Accessibility</a>
+    </div>
+    <span>Payments secured by Stripe</span>
+  </div>
+</footer>
+
+<script>
+// NAV SCROLL
+window.addEventListener('scroll',()=>{
+  document.getElementById('navbar').classList.toggle('scrolled',window.scrollY>50)
+})
+
+// HAMBURGER
+document.getElementById('hamburger').addEventListener('click',()=>{
+  document.getElementById('mobileMenu').classList.toggle('open')
+})
+function closeMobile(){document.getElementById('mobileMenu').classList.remove('open')}
+
+// GALLERY LIGHTBOX
+const imgs=[
+  'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?w=1200&q=90',
+  'https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=1200&q=90',
+  'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?w=1200&q=90',
+  'https://images.unsplash.com/photo-1556911220-bff31c812dba?w=1200&q=90',
+  'https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=1200&q=90'
+]
+let lbIdx=0
+function openLightbox(i){lbIdx=i;document.getElementById('lbImg').src=imgs[i];document.getElementById('lightbox').classList.add('open')}
+function closeLightbox(){document.getElementById('lightbox').classList.remove('open')}
+function lbNav(d){lbIdx=(lbIdx+d+imgs.length)%imgs.length;document.getElementById('lbImg').src=imgs[lbIdx]}
+document.getElementById('lightbox').addEventListener('click',function(e){if(e.target===this)closeLightbox()})
+
+// AMENITIES
+const amenityData={
+  indoor:[
+    ['&#x1F373;','Chef\'s Kitchen','Wolf range, double oven, Sub-Zero fridge'],
+    ['&#x2615;','Coffee Station','Breville espresso + Nespresso'],
+    ['&#x1F4FA;','Smart TVs','4K in every room, Netflix/Apple TV included'],
+    ['&#x2744;&#xFE0F;','Central A/C &amp; Heat','Multi-zone climate control'],
+    ['&#x1F9FA;','Washer &amp; Dryer','In-unit, full-size'],
+    ['&#x1F6C1;','Soaking Tub','Primary suite, freestanding'],
+    ['&#x1F6BF;','Rainfall Showers','All 3 full bathrooms'],
+    ['&#x1F3AE;','Game Room','Pool table, air hockey, bar'],
+    ['&#x1F4DA;','Library','Curated books, board games'],
+    ['&#x1F377;','Wine Fridge','2-zone, holds 60 bottles'],
+    ['&#x1F510;','Safe','In-room, digital lock'],
+    ['&#x1FA91;','Dining Table','Seats 12 comfortably'],
+  ],
+  outdoor:[
+    ['&#x267E;&#xFE0F;','Infinity Pool','Heated, open year-round, canyon views'],
+    ['&#x1F525;','Hot Tub','6-person, jets + waterfall'],
+    ['&#x1F33F;','Landscaped Grounds','Native AZ plants, privacy'],
+    ['&#x1F356;','BBQ Grill','Weber Summit, gas'],
+    ['&#x1FA91;','Outdoor Dining','Seats 10, covered pergola'],
+    ['&#x1F6CB;&#xFE0F;','Lounge Chairs','6 chaise lounges poolside'],
+    ['&#x1F305;','Terrace','Wrap-around, red rock views'],
+    ['&#x26F3;','Putting Green','Synthetic turf, 3 holes'],
+    ['&#x1F319;','Fire Pit','Natural gas, seating for 8'],
+    ['&#x1F17F;&#xFE0F;','4-Car Garage','+ Driveway for 4 more'],
+    ['&#x1F304;','Trail Access','Direct to Cathedral Rock'],
+    ['&#x1F33B;','Herb Garden','Fresh herbs for cooking'],
+  ],
+  sleeping:[
+    ['&#x1F451;','Primary Suite','King, terrace access, spa bath'],
+    ['&#x1F6CF;&#xFE0F;','Bedroom 2','King, en-suite bath, pool view'],
+    ['&#x1F6CF;&#xFE0F;','Bedroom 3','Queen, shared bath, garden view'],
+    ['&#x1F6CB;&#xFE0F;','Sofa Bed','Queen, living room'],
+    ['&#x1F3AD;','Blackout Curtains','All bedrooms'],
+    ['&#x1F4A4;','Premium Linens','400-thread Egyptian cotton'],
+    ['&#x1F9F8;','Extra Bedding','In all closets'],
+  ],
+  tech:[
+    ['&#x1F6DC;','Starlink Internet','Gigabit speeds, never drops'],
+    ['&#x1F5A5;&#xFE0F;','Dedicated Desk','Private office nook, USB-C hub'],
+    ['&#x1F5A8;&#xFE0F;','Printer/Scanner','In office, AirPrint'],
+    ['&#x1F4F1;','Smart Home','Voice-controlled lights, blinds, music'],
+    ['&#x1F512;','Smart Locks','Keyless, unique code per stay'],
+    ['&#x1F50C;','EV Charger','Level 2, Tesla + J1772'],
+    ['&#x1F4F7;','Security Cameras','Exterior only (disclosed)'],
+    ['&#x1F3B5;','Sonos System','Whole-home, pool + indoor'],
+  ]
+}
+function switchTab(btn,cat){
+  document.querySelectorAll('.amenity-tab').forEach(t=>t.classList.remove('active'))
+  btn.classList.add('active')
+  renderAmenities(cat)
+}
+function renderAmenities(cat){
+  const grid=document.getElementById('amenityGrid')
+  grid.innerHTML=amenityData[cat].map(([icon,name,detail])=>`
+    <div class="amenity-item"><span class="amenity-icon">${icon}</span>
+      <div><strong style="font-size:.85rem;font-weight:500">${name}</strong><br><span style="font-size:.75rem;color:var(--muted)">${detail}</span></div>
+    </div>`).join('')
+}
+renderAmenities('indoor')
+
+// PRICE CALC
+function calcPrice(){
+  const ci=document.getElementById('checkin').value
+  const co=document.getElementById('checkout').value
+  if(!ci||!co)return
+  const nights=Math.round((new Date(co)-new Date(ci))/(1000*60*60*24))
+  if(nights<=0)return
+  const rate=385,cleaning=250,deposit=500
+  const subtotal=rate*nights
+  const tax=Math.round(subtotal*.085)
+  const total=subtotal+cleaning+deposit+tax
+  document.getElementById('nightsLabel').textContent=`$${rate} x ${nights} night${nights>1?'s':''}`
+  document.getElementById('nightsTotal').textContent=`$${subtotal.toLocaleString()}`
+  document.getElementById('taxTotal').textContent=`$${tax.toLocaleString()}`
+  document.getElementById('grandTotal').textContent=`$${total.toLocaleString()}`
+}
+function handleBook(){
+  const ci=document.getElementById('checkin').value
+  const co=document.getElementById('checkout').value
+  if(!ci||!co){alert('Please select your check-in and check-out dates.');return}
+  const s=document.getElementById('bookSuccess')
+  s.classList.add('show')
+  setTimeout(()=>s.classList.remove('show'),5000)
+}
+
+// INQUIRY FORM
+function handleInquiry(e){
+  e.preventDefault()
+  const s=document.getElementById('inquirySuccess')
+  s.classList.add('show')
+  e.target.reset()
+  setTimeout(()=>s.classList.remove('show'),5000)
+}
+
+// CALENDAR
+const months=['January','February','March','April','May','June','July','August','September','October','November','December']
+const booked={
+  '2025-3':[3,4,5,6,7,14,15,21,22,23,28,29,30],
+  '2025-4':[4,5,6,12,13,14,18,19,20,25,26]
+}
+function renderCal(containerId,year,month){
+  const key=`${year}-${month+1}`
+  const bookedDays=booked[key]||[]
+  const first=new Date(year,month,1).getDay()
+  const days=new Date(year,month+1,0).getDate()
+  const today=new Date()
+  const isCurrentMonth=today.getFullYear()===year&&today.getMonth()===month
+  let html=`<div class="cal-header"><h4>${months[month]} ${year}</h4></div>`
+  html+='<div class="cal-days">'
+  ;['Su','Mo','Tu','We','Th','Fr','Sa'].forEach(d=>{html+=`<div class="cal-day-label">${d}</div>`})
+  for(let i=0;i<first;i++)html+=`<div class="cal-day empty"></div>`
+  for(let d=1;d<=days;d++){
+    const isBooked=bookedDays.includes(d)
+    const isToday=isCurrentMonth&&d===today.getDate()
+    let cls='cal-day'
+    if(isBooked)cls+=' booked'
+    else if(isToday)cls+=' today'
+    else cls+=' available'
+    html+=`<div class="${cls}">${d}</div>`
+  }
+  html+='</div>'
+  document.getElementById(containerId).innerHTML=html
+}
+const now=new Date()
+renderCal('cal1',now.getFullYear(),now.getMonth())
+renderCal('cal2',now.getFullYear(),now.getMonth()+1>11?now.getFullYear()+1:now.getFullYear(),now.getMonth()+1>11?0:now.getMonth()+1)
+</script>
+</body>
+</html>
