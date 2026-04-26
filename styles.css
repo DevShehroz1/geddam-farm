@@ -175,6 +175,15 @@ ul {
     align-items: center;
     justify-content: space-between;
     position: relative;
+    min-height: 88px;
+}
+
+.navbar.scrolled .nav-container {
+    min-height: 78px;
+}
+
+.navbar.scrolled .nav-logo img {
+    height: 64px;
 }
 
 .nav-logo {
