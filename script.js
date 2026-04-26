@@ -44,31 +44,43 @@ document.addEventListener('DOMContentLoaded', function () {
     handleNavScroll();
 
     // ============================================
-    // MOBILE MENU TOGGLE
+    // DRAWER MENU TOGGLE
     // ============================================
     const mobileToggle = document.getElementById('mobileToggle');
     const navLinks = document.getElementById('navLinks');
+    const navOverlay = document.getElementById('navOverlay');
+
+    function closeDrawer() {
+        if (mobileToggle) mobileToggle.classList.remove('active');
+        if (navLinks) navLinks.classList.remove('active');
+        if (navOverlay) navOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    function openDrawer() {
+        if (mobileToggle) mobileToggle.classList.add('active');
+        if (navLinks) navLinks.classList.add('active');
+        if (navOverlay) navOverlay.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
 
     if (mobileToggle && navLinks) {
         mobileToggle.addEventListener('click', function () {
-            mobileToggle.classList.toggle('active');
-            navLinks.classList.toggle('active');
-
             if (navLinks.classList.contains('active')) {
-                document.body.style.overflow = 'hidden';
+                closeDrawer();
             } else {
-                document.body.style.overflow = '';
+                openDrawer();
             }
         });
 
-        // Close mobile menu when a link is clicked
-        navLinks.querySelectorAll('.nav-link').forEach(function (link) {
-            link.addEventListener('click', function () {
-                mobileToggle.classList.remove('active');
-                navLinks.classList.remove('active');
-                document.body.style.overflow = '';
-            });
+        // Close drawer when a link or CTA is clicked
+        navLinks.querySelectorAll('a').forEach(function (link) {
+            link.addEventListener('click', closeDrawer);
         });
+    }
+
+    if (navOverlay) {
+        navOverlay.addEventListener('click', closeDrawer);
     }
 
     // ============================================
