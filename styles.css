@@ -1376,6 +1376,13 @@ section {
     color: var(--white);
     text-align: center;
     gap: 8px;
+    text-decoration: none;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+a.map-placeholder:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.18);
 }
 
 .map-placeholder i {
@@ -1388,11 +1395,13 @@ section {
     font-family: 'Playfair Display', serif;
     font-size: 1.2rem;
     font-weight: 600;
+    margin: 0;
 }
 
 .map-placeholder span {
-    font-size: 0.85rem;
-    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.9rem;
+    color: rgba(255, 255, 255, 0.75);
+    line-height: 1.4;
 }
 
 /* ============================================
