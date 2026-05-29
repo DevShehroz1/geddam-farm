@@ -1548,6 +1548,38 @@ section {
     padding: 40px;
 }
 
+.availability-note {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1rem;
+    margin: 0 0 1.25rem;
+    border-radius: 10px;
+    background: rgba(46, 125, 50, 0.08);
+    color: #2e7d32;
+    font-size: 0.92rem;
+    line-height: 1.35;
+}
+
+.availability-note i {
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.flatpickr-day.flatpickr-disabled,
+.flatpickr-day.flatpickr-disabled:hover {
+    background: repeating-linear-gradient(
+        45deg,
+        rgba(0, 0, 0, 0.04),
+        rgba(0, 0, 0, 0.04) 4px,
+        rgba(0, 0, 0, 0.08) 4px,
+        rgba(0, 0, 0, 0.08) 8px
+    );
+    color: rgba(0, 0, 0, 0.28);
+    text-decoration: line-through;
+    cursor: not-allowed;
+}
+
 .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
