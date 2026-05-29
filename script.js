@@ -332,9 +332,99 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     // ============================================
-    // CONTACT FORM HANDLER
+    // CONTACT FORM HANDLER + AVAILABILITY SYNC
     // ============================================
     const contactForm = document.getElementById('contactForm');
+
+    // Blocked nights pulled from Vrbo + Booking.com via /api/availability.
+    // Stored as a Set of "YYYY-MM-DD" strings — each entry is one occupied night.
+    var blockedNights = new Set();
+
+    function toIsoDate(date) {
+        var y = date.getFullYear();
+        var m = String(date.getMonth() + 1).padStart(2, '0');
+        var d = String(date.getDate()).padStart(2, '0');
+        return y + '-' + m + '-' + d;
+    }
+
+    function expandRangeToNights(startIso, endIso, into) {
+        // ICS DTEND is exclusive, so [start, end) covers the occupied nights.
+        var start = new Date(startIso + 'T00:00:00');
+        var end = new Date(endIso + 'T00:00:00');
+        if (isNaN(start) || isNaN(end) || end <= start) return;
+        for (var d = new Date(start); d < end; d.setDate(d.getDate() + 1)) {
+            into.add(toIsoDate(d));
+        }
+    }
+
+    function rangeOverlapsBlocked(checkInIso, checkOutIso) {
+        var inDate = new Date(checkInIso + 'T00:00:00');
+        var outDate = new Date(checkOutIso + 'T00:00:00');
+        if (isNaN(inDate) || isNaN(outDate) || outDate <= inDate) return false;
+        for (var d = new Date(inDate); d < outDate; d.setDate(d.getDate() + 1)) {
+            if (blockedNights.has(toIsoDate(d))) return true;
+        }
+        return false;
+    }
+
+    var checkInPicker = null;
+    var checkOutPicker = null;
+
+    function initDatePickers() {
+        if (typeof flatpickr !== 'function') return;
+        var checkInEl = document.getElementById('checkIn');
+        var checkOutEl = document.getElementById('checkOut');
+        if (!checkInEl || !checkOutEl) return;
+
+        var disableFn = function (date) {
+            return blockedNights.has(toIsoDate(date));
+        };
+
+        checkInPicker = flatpickr(checkInEl, {
+            dateFormat: 'Y-m-d',
+            minDate: 'today',
+            disable: [disableFn],
+            onChange: function (selectedDates) {
+                if (selectedDates[0] && checkOutPicker) {
+                    var next = new Date(selectedDates[0]);
+                    next.setDate(next.getDate() + 1);
+                    checkOutPicker.set('minDate', next);
+                }
+            },
+        });
+
+        checkOutPicker = flatpickr(checkOutEl, {
+            dateFormat: 'Y-m-d',
+            minDate: new Date(Date.now() + 24 * 60 * 60 * 1000),
+            disable: [disableFn],
+        });
+    }
+
+    function refreshPickerDisabledDates() {
+        if (checkInPicker) checkInPicker.redraw();
+        if (checkOutPicker) checkOutPicker.redraw();
+    }
+
+    function loadAvailability() {
+        fetch('/api/availability', { cache: 'no-store' })
+            .then(function (res) { return res.ok ? res.json() : null; })
+            .then(function (data) {
+                if (!data || !Array.isArray(data.events)) return;
+                blockedNights = new Set();
+                data.events.forEach(function (ev) {
+                    if (ev && ev.start && ev.end) {
+                        expandRangeToNights(ev.start, ev.end, blockedNights);
+                    }
+                });
+                refreshPickerDisabledDates();
+                var note = document.getElementById('availabilityNote');
+                if (note && blockedNights.size > 0) note.hidden = false;
+            })
+            .catch(function () { /* silent — form still usable */ });
+    }
+
+    initDatePickers();
+    loadAvailability();
 
     if (contactForm) {
         contactForm.addEventListener('submit', function (e) {
@@ -358,6 +448,12 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
+            // Block ranges that overlap a night already booked on Vrbo / Booking.com
+            if (rangeOverlapsBlocked(checkIn, checkOut)) {
+                alert('Sorry — one or more nights in that range are already booked on Vrbo or Booking.com. Please pick a different range.');
+                return;
+            }
+
             var recipient = 'pgeddam@gmail.com';
             var subject = 'Booking Inquiry from ' + firstName + ' ' + lastName;
             var bodyLines = [
@@ -378,6 +474,7 @@ document.addEventListener('DOMContentLoaded', function () {
             var mailto = 'mailto:' + recipient +
                 '?subject=' + encodeURIComponent(subject) +
                 '&body=' + encodeURIComponent(bodyLines.join('\n'));
+
 
             var submitBtn = contactForm.querySelector('button[type="submit"]');
             var originalText = submitBtn.innerHTML;
