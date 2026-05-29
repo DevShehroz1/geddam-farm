@@ -340,32 +340,53 @@ document.addEventListener('DOMContentLoaded', function () {
         contactForm.addEventListener('submit', function (e) {
             e.preventDefault();
 
-            var firstName = document.getElementById('firstName').value;
-            var lastName = document.getElementById('lastName').value;
+            var firstName = document.getElementById('firstName').value.trim();
+            var lastName = document.getElementById('lastName').value.trim();
             var checkIn = document.getElementById('checkIn').value;
             var checkOut = document.getElementById('checkOut').value;
             var guests = document.getElementById('guests').value;
+            var messageEl = document.getElementById('message');
+            var message = messageEl ? messageEl.value.trim() : '';
 
             if (!firstName || !lastName || !checkIn || !checkOut || !guests) {
                 alert('Please fill in all required fields.');
                 return;
             }
 
-            // Check that check-out is after check-in
             if (new Date(checkOut) <= new Date(checkIn)) {
                 alert('Check-out date must be after check-in date.');
                 return;
             }
 
-            // Simulate form submission
+            var recipient = 'pgeddam@gmail.com';
+            var subject = 'Booking Inquiry from ' + firstName + ' ' + lastName;
+            var bodyLines = [
+                'Hello Geddam Farms,',
+                '',
+                'I would like to enquire about a stay with the following details:',
+                '',
+                'Name: ' + firstName + ' ' + lastName,
+                'Check-in: ' + checkIn,
+                'Check-out: ' + checkOut,
+                'Guests: ' + guests,
+                '',
+                'Message:',
+                message || '(none)',
+                '',
+                'Thank you.'
+            ];
+            var mailto = 'mailto:' + recipient +
+                '?subject=' + encodeURIComponent(subject) +
+                '&body=' + encodeURIComponent(bodyLines.join('\n'));
+
             var submitBtn = contactForm.querySelector('button[type="submit"]');
             var originalText = submitBtn.innerHTML;
-            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Sending...</span>';
+            submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> <span>Opening email…</span>';
             submitBtn.disabled = true;
 
+            window.location.href = mailto;
+
             setTimeout(function () {
-                alert('Thank you, ' + firstName + '! Your inquiry has been submitted. We\'ll get back to you within 24 hours with availability and pricing.');
-                contactForm.reset();
                 submitBtn.innerHTML = originalText;
                 submitBtn.disabled = false;
             }, 1500);
