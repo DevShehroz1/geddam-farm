@@ -1,6 +1,7 @@
 const FEEDS = [
   { name: 'vrbo', url: process.env.VRBO_ICAL_URL },
   { name: 'booking', url: process.env.BOOKING_ICAL_URL },
+  { name: 'airbnb', url: process.env.AIRBNB_ICAL_URL },
 ];
 
 export function parseIcsDate(value) {
