@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // ============================================
     const contactForm = document.getElementById('contactForm');
 
-    // Blocked nights pulled from Vrbo + Booking.com via /api/availability.
+    // Blocked nights pulled from Airbnb + Vrbo + Booking.com via /api/availability.
     // Stored as a Set of "YYYY-MM-DD" strings — each entry is one occupied night.
     var blockedNights = new Set();
 
@@ -448,9 +448,9 @@ document.addEventListener('DOMContentLoaded', function () {
                 return;
             }
 
-            // Block ranges that overlap a night already booked on Vrbo / Booking.com
+            // Block ranges that overlap a night already booked on Airbnb / Vrbo / Booking.com
             if (rangeOverlapsBlocked(checkIn, checkOut)) {
-                alert('Sorry — one or more nights in that range are already booked on Vrbo or Booking.com. Please pick a different range.');
+                alert('Sorry — one or more nights in that range are already booked on Airbnb, Vrbo or Booking.com. Please pick a different range.');
                 return;
             }
 
